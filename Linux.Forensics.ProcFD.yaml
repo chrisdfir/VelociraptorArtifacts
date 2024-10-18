@@ -26,7 +26,8 @@ sources:
             read_file(filename="/proc/" + OSPath[1] + "/comm") AS ParentCommand,
             read_file(filename="/proc/" + OSPath[1] + "/cmdline") AS ParentCmdLine,
             read_file(filename="/proc/" + OSPath[1] + "/loginuid") AS LoginUID,
-            Mode
+            format(format="%o", args=[Mode]) AS OctalMode,
+            Mode.String AS StringMode
         FROM glob(globs="/proc/*/fd/*")
         
       SELECT
@@ -39,7 +40,8 @@ sources:
             Atime,
             Ctime,
             Btime,
-            Mode
+            OctalMode,
+            StringMode
       FROM open_fds
       WHERE FilePath =~ "^/" AND NOT FilePath =~ "^/dev/"
 
@@ -55,7 +57,8 @@ sources:
             Atime,
             Ctime,
             Btime,
-            Mode
+            OctalMode,
+            StringMode
       FROM open_fds
       WHERE FilePath =~ "socket:"
 
@@ -71,7 +74,8 @@ sources:
             Atime,
             Ctime,
             Btime,
-            Mode
+            OctalMode,
+            StringMode
       FROM open_fds
       WHERE FilePath =~ "^/dev/"
 
@@ -87,6 +91,7 @@ sources:
             Atime,
             Ctime,
             Btime,
-            Mode
+            OctalMode,
+            StringMode
       FROM open_fds
       WHERE FilePath =~ "deleted"
