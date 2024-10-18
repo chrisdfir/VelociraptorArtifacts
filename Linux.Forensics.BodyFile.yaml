@@ -1,8 +1,8 @@
 name: Linux.Forensics.BodyFile
 author: Chris DiSalle - @chrisdfir
 description: |
-  This artifact collects file stat information to create a bodyfile from various Linux directories, including /tmp, /home, /etc, /var, /usr, /boot, /opt, /lib, and /root.
-  The artifact gathers metadata such as file size, modification time, access time, creation time, and whether the file is a directory or a symbolic link.
+  This artifact collects detailed file metadata from key Linux directories, including /tmp, /home, /etc, /var, /usr, /boot, /opt, /lib, and /root. It gathers information such as file size, modification time, access time, creation time, and whether the file is a directory or a symbolic link. 
+  For symbolic links, the artifact also captures the target path that the symlink points to. The collection is limited to 5 directory levels deep to ensure efficient analysis.
   
 reference:
   - https://trustedsec.com/blog/incident-response-bring-out-the-body-file
