@@ -1,0 +1,56 @@
+name: Linux.Forensics.BodyFile
+author: Chris DiSalle - @chrisdfir
+description: |
+  This artifact collects file stat information to create a bodyfile from various Linux directories, including /tmp, /home, /etc, /var, /usr, /boot, /opt, /lib, and /root.
+  The artifact gathers metadata such as file size, modification time, access time, creation time, and whether the file is a directory or a symbolic link.
+  
+reference:
+  - https://trustedsec.com/blog/incident-response-bring-out-the-body-file
+
+type: CLIENT
+
+precondition: SELECT OS FROM info() WHERE OS = 'linux'
+
+sources:
+  - name: BodyFileCollection
+    query: |
+      LET BodyFile <= SELECT OSPath, Name, Size, Mtime, Ctime, Atime, Mode, IsDir, IsLink
+      FROM chain(
+          a={SELECT OSPath, Name, Size, Mtime, Ctime, Atime, Mode, IsDir, IsLink
+             FROM glob(globs='/tmp/**')
+             WHERE OSPath =~ "^(/tmp/[^/]*){0,5}/[^/]*$"},
+          
+          b={SELECT OSPath, Name, Size, Mtime, Ctime, Atime, Mode, IsDir, IsLink
+             FROM glob(globs='/home/**')
+             WHERE OSPath =~ "^(/home/[^/]*){0,5}/[^/]*$"},
+          
+          c={SELECT OSPath, Name, Size, Mtime, Ctime, Atime, Mode, IsDir, IsLink
+             FROM glob(globs='/etc/**')
+             WHERE OSPath =~ "^(/etc/[^/]*){0,5}/[^/]*$"},
+          
+          d={SELECT OSPath, Name, Size, Mtime, Ctime, Atime, Mode, IsDir, IsLink
+             FROM glob(globs='/var/**')
+             WHERE OSPath =~ "^(/var/[^/]*){0,5}/[^/]*$"},
+          
+          e={SELECT OSPath, Name, Size, Mtime, Ctime, Atime, Mode, IsDir, IsLink
+             FROM glob(globs='/usr/**')
+             WHERE OSPath =~ "^(/usr/[^/]*){0,5}/[^/]*$"},
+          
+          f={SELECT OSPath, Name, Size, Mtime, Ctime, Atime, Mode, IsDir, IsLink
+             FROM glob(globs='/boot/**')
+             WHERE OSPath =~ "^(/boot/[^/]*){0,5}/[^/]*$"},
+          
+          g={SELECT OSPath, Name, Size, Mtime, Ctime, Atime, Mode, IsDir, IsLink
+             FROM glob(globs='/opt/**')
+             WHERE OSPath =~ "^(/opt/[^/]*){0,5}/[^/]*$"},
+          
+          h={SELECT OSPath, Name, Size, Mtime, Ctime, Atime, Mode, IsDir, IsLink
+             FROM glob(globs='/lib/**')
+             WHERE OSPath =~ "^(/lib/[^/]*){0,5}/[^/]*$"},
+          
+          i={SELECT OSPath, Name, Size, Mtime, Ctime, Atime, Mode, IsDir, IsLink
+             FROM glob(globs='/root/**')
+             WHERE OSPath =~ "^(/root/[^/]*){0,5}/[^/]*$"}
+      )
+      
+      SELECT * FROM BodyFile
