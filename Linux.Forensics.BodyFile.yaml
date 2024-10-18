@@ -14,41 +14,41 @@ precondition: SELECT OS FROM info() WHERE OS = 'linux'
 sources:
   - name: BodyFileCollection
     query: |
-      LET BodyFile <= SELECT OSPath, Name, Size, Mtime, Ctime, Atime, Mode, IsDir, IsLink
+      LET BodyFile <= SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link AS Symlink, Mtime, Atime, Ctime, Mode
       FROM chain(
-          a={SELECT OSPath, Name, Size, Mtime, Ctime, Atime, Mode, IsDir, IsLink
+          a={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, Mode, Data
              FROM glob(globs='/tmp/**')
              WHERE OSPath =~ "^(/tmp/[^/]*){0,5}/[^/]*$"},
           
-          b={SELECT OSPath, Name, Size, Mtime, Ctime, Atime, Mode, IsDir, IsLink
+          b={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, Mode, Data
              FROM glob(globs='/home/**')
              WHERE OSPath =~ "^(/home/[^/]*){0,5}/[^/]*$"},
           
-          c={SELECT OSPath, Name, Size, Mtime, Ctime, Atime, Mode, IsDir, IsLink
+          c={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, Mode, Data
              FROM glob(globs='/etc/**')
              WHERE OSPath =~ "^(/etc/[^/]*){0,5}/[^/]*$"},
           
-          d={SELECT OSPath, Name, Size, Mtime, Ctime, Atime, Mode, IsDir, IsLink
+          d={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, Mode, Data
              FROM glob(globs='/var/**')
              WHERE OSPath =~ "^(/var/[^/]*){0,5}/[^/]*$"},
           
-          e={SELECT OSPath, Name, Size, Mtime, Ctime, Atime, Mode, IsDir, IsLink
+          e={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, Mode, Data
              FROM glob(globs='/usr/**')
              WHERE OSPath =~ "^(/usr/[^/]*){0,5}/[^/]*$"},
           
-          f={SELECT OSPath, Name, Size, Mtime, Ctime, Atime, Mode, IsDir, IsLink
+          f={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, Mode, Data
              FROM glob(globs='/boot/**')
              WHERE OSPath =~ "^(/boot/[^/]*){0,5}/[^/]*$"},
           
-          g={SELECT OSPath, Name, Size, Mtime, Ctime, Atime, Mode, IsDir, IsLink
+          g={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, Mode, Data
              FROM glob(globs='/opt/**')
              WHERE OSPath =~ "^(/opt/[^/]*){0,5}/[^/]*$"},
           
-          h={SELECT OSPath, Name, Size, Mtime, Ctime, Atime, Mode, IsDir, IsLink
+          h={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, Mode, Data
              FROM glob(globs='/lib/**')
              WHERE OSPath =~ "^(/lib/[^/]*){0,5}/[^/]*$"},
           
-          i={SELECT OSPath, Name, Size, Mtime, Ctime, Atime, Mode, IsDir, IsLink
+          i={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, Mode, Data
              FROM glob(globs='/root/**')
              WHERE OSPath =~ "^(/root/[^/]*){0,5}/[^/]*$"}
       )
