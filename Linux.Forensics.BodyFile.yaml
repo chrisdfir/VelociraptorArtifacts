@@ -1,4 +1,4 @@
-name: Linux.Forensics.BodyFile_Test
+name: Linux.Forensics.BodyFile
 author: Chris DiSalle - @chrisdfir
 description: |
   This artifact collects detailed file metadata from key Linux directories, including /tmp, /home, /etc, /var, /usr, /boot, /opt, /lib, and /root. 
@@ -43,9 +43,6 @@ sources:
       
       -- Split the Stdout result into individual file paths (split by newline)
       LET SplitPaths = SELECT split(string=Stdout, sep="\n") AS PathList FROM RecurseFiles
-      --LET AllPaths = SELECT * FROM foreach(row=SplitPaths,query={
-        --SELECT * FROM flatten(query=SplitPaths)
-      --})
       LET AllPaths = SELECT * FROM flatten(query=SplitPaths)
       
       -- Ensure paths are valid and not NULL before passing to stat
