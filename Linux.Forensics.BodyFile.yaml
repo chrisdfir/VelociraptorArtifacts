@@ -1,9 +1,9 @@
 name: Linux.Forensics.BodyFile
 author: Chris DiSalle - @chrisdfir
 description: |
-  This artifact collects detailed file metadata from key Linux directories, including /tmp, /home, /etc, /var, /usr, /boot, /opt, /lib, and /root. 
-  It gathers information such as file size, modification time, access time, creation time, and whether the file is a directory or a symbolic link. 
-  For symbolic links, the artifact also captures the target path that the symlink points to. The collection is limited to 6 directory levels deep to ensure efficient analysis.
+  This artifact collects detailed file metadata from Linux directories specified by the TargetDirectories parameter. The default directories include /tmp, /home, /etc, /var, /usr, /boot, /opt, /lib, and /root, but users can modify this list as needed.
+  Metadata such as file size, modification time, access time, creation time, and file type (directory or symbolic link) is gathered recursively up to a depth defined by the MaxRecursionDepth parameter.
+  For symbolic links, the artifact also captures the target path that the symlink points to. 
   
 reference:
   - https://trustedsec.com/blog/incident-response-bring-out-the-body-file
