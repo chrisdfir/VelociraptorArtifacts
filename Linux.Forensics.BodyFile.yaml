@@ -58,7 +58,8 @@ sources:
       Data.Link, 
       Mtime, 
       Atime, 
-      Ctime, 
+      Ctime,
+      Btime,
       format(format="%o", args=[Mode]) AS OctalMode, 
       Mode.String AS StringMode, 
       Data 
